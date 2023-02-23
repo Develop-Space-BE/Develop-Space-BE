@@ -20,14 +20,14 @@ import static developspace.com.developspace.common.response.success.SuccessCode.
 @RestController
 @Slf4j
 public class AnswerController {
-    @Tag(name = "CollaboRequest")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "2000", description = "답변 작성 성공"),
-    })
-    @Operation(summary = "답변 작성")
-    @GetMapping("/api/answer")
-    public ResponseEntity<SuccessResponse<Object>> getCollaboRequest(@AuthenticationPrincipal ){
-
-        return SuccessResponse.toResponseEntity(CREATE_ANSWER,answerService.createAnswer());
-    }
+//    @Tag(name = "CollaboRequest")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "2000", description = "답변 작성 성공"),
+//    })
+//    @Operation(summary = "답변 작성")
+//    @GetMapping("/api/answer")
+//    public ResponseEntity<SuccessResponse<Object>> getCollaboRequest(@AuthenticationPrincipal ){
+//
+//        return SuccessResponse.toResponseEntity(CREATE_ANSWER,answerService.createAnswer());
+//    }
 }
