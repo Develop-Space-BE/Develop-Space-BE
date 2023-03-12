@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static developspace.com.developspace.common.exception.Domain.MEMBER;
+import static developspace.com.developspace.common.exception.Layer.SERVICE;
 import static developspace.com.developspace.common.response.error.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
@@ -19,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(()-> new NotFoundException(MEMBER_NOT_FOUND));
+                .orElseThrow(()-> new NotFoundException(MEMBER, SERVICE, MEMBER_NOT_FOUND, "UserDetailsServiceImpl"));
         return new UserDetailsImpl(member, member.getEmail(), member.getPassword());
     }
 }

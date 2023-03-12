@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class NotAuthorizedMemberException extends SecurityException{
+public class DuplicationException extends IllegalArgumentException{
     private Domain domain;
     private Layer layer;
     private ErrorCode errorCode;
