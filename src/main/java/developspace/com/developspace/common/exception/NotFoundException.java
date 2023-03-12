@@ -7,5 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class NotFoundException extends IllegalArgumentException{
+    private Domain domain;
+    private Layer layer;
     private ErrorCode errorCode;
+    private Object causeVariable;
 }
