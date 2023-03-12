@@ -53,6 +53,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/api/member/signup","/api/member/login").permitAll()
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/answer/**").permitAll()
                 .antMatchers("api/question/**").permitAll()
                 .anyRequest().authenticated();
