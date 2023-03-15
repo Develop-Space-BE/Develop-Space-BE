@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 @RequiredArgsConstructor
-@EnableWebSecurity
+//@EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
 
@@ -36,7 +36,8 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console())
+                .antMatchers("/ws/**")
+//                .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
