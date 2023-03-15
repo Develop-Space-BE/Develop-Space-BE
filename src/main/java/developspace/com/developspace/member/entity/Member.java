@@ -42,4 +42,8 @@ public class Member {
         this.role = role;
         this.quit = quit;
     }
+
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
+    }
 }
