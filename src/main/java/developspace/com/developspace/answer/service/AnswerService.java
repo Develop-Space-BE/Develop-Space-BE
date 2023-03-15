@@ -57,4 +57,21 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
+    @Transactional
+    public void deleteAnswer(Long answerId, Long id) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new NotFoundException(ANSWER, SERVICE, ANSWER_NOT_FOUND, "Answer ID : " + answerId)
+        );
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));
+
+
+        if (!answer.getNickname().equals(member.getNickname())){
+            throw new NotAuthorizedMemberException(ANSWER, SERVICE, MEMBER_NOT_AUTHORIZED, member.getNickname());
+        }
+
+        answerRepository.deleteById(answerId);
+    }
+
+
 }
