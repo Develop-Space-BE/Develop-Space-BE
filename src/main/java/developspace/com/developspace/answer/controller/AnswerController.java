@@ -4,6 +4,7 @@ import developspace.com.developspace.answer.dto.AnswerLikeDto;
 import developspace.com.developspace.answer.dto.RequestAnswerDto;
 import developspace.com.developspace.answer.service.AnswerService;
 import developspace.com.developspace.common.response.success.SuccessResponse;
+import developspace.com.developspace.member.entity.Member;
 import developspace.com.developspace.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,11 +32,11 @@ public class AnswerController {
             @ApiResponse(responseCode = "4044", description = "존재하지 않는 답변입니다.")
     })
     @Operation(summary = "답변 작성", description = "답변 작성")
-    @PostMapping("/{questionId}")
-    public ResponseEntity<SuccessResponse<Object>> writeAnswer(@PathVariable Long questionId,
+    @PostMapping()
+    public ResponseEntity<SuccessResponse<Object>> writeAnswer(
                                                                @RequestBody RequestAnswerDto requestAnswerDto,
                                                                @AuthenticationPrincipal UserDetailsImpl userDetails){
-        answerService.writeAnswer(questionId, requestAnswerDto, userDetails.getMember().getId());
+        answerService.writeAnswer(requestAnswerDto, userDetails.getMember().getId());
         return SuccessResponse.toResponseEntity(WRITE_ANSWER, null);
     }
 
@@ -89,6 +90,29 @@ public class AnswerController {
         }else{
             return SuccessResponse.toResponseEntity(UNLIKE_ANSWER,answerLikeDto);
         }
+    }
+
+    @Tag(name = "Answer")
+    @Operation(summary = "답변 조회", description = "답변 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "답변 조회 성공"),
+    })
+
+    @GetMapping("")
+    public ResponseEntity<SuccessResponse<Object>> getAnswerList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return SuccessResponse.toResponseEntity(GET_ANSWER, answerService.getAnswer(userDetails.getMember()));
+    }
+
+    @Tag(name = "Answer")
+    @Operation(summary = "내 답변 조회", description = "내 답변 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "내 답변 조회 성공"),
+    })
+
+    @GetMapping("/myanswer")
+    public ResponseEntity<SuccessResponse<Object>> myAnswerList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        String nickname = userDetails.getMember().getNickname();
+        return SuccessResponse.toResponseEntity(MY_ANSWER, answerService.myAnswer(nickname));
     }
 
 
