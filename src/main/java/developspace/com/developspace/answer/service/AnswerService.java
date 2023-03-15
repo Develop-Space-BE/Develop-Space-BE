@@ -7,6 +7,7 @@ import developspace.com.developspace.answer.repository.AnswerRepository;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
 import developspace.com.developspace.common.exception.NotFoundException;
 import developspace.com.developspace.member.entity.Member;
+import developspace.com.developspace.member.entity.MemberRole;
 import developspace.com.developspace.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,16 +59,21 @@ public class AnswerService {
     }
 
     @Transactional
-    public void deleteAnswer(Long answerId, Long id) {
+    public void deleteAnswer(Long answerId, Member member) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(
                 () -> new NotFoundException(ANSWER, SERVICE, ANSWER_NOT_FOUND, "Answer ID : " + answerId)
         );
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));
+        member = memberRepository.findById(member.getId())
+                .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " ));
 
+        MemberRole memberRole = member.getRole();
 
-        if (!answer.getNickname().equals(member.getNickname())){
-            throw new NotAuthorizedMemberException(ANSWER, SERVICE, MEMBER_NOT_AUTHORIZED, member.getNickname());
+        if(memberRole == MemberRole.MEMBER){
+            if (!answer.getNickname().equals(member.getNickname())){
+                throw new NotAuthorizedMemberException(ANSWER, SERVICE, MEMBER_NOT_AUTHORIZED, member.getNickname());
+            }
+        } else {
+            answerRepository.deleteById(answerId);
         }
 
         answerRepository.deleteById(answerId);

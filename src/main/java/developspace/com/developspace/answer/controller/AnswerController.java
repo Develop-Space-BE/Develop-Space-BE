@@ -66,7 +66,7 @@ public class AnswerController {
     public ResponseEntity<SuccessResponse<Object>> deleteAnswer (@PathVariable Long answerId,
                                                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        answerService.deleteAnswer(answerId,userDetails.getMember().getId());
+        answerService.deleteAnswer(answerId, userDetails.getMember());
 
         return SuccessResponse.toResponseEntity(DELETE_COMMENT, null);
     }
