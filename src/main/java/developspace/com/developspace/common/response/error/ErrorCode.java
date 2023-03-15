@@ -13,7 +13,9 @@ public enum ErrorCode {
     NICKNAME_DUPLICATED(HttpStatus.OK, "중복된 닉네임입니다.", 4091),
     EMAIL_DUPLICATED(HttpStatus.OK, "중복된 이메일입니다.", 4091),
     UNHANDLED_SERVER_ERROR(HttpStatus.OK, "서버 에러 입니다.", 5000),
-    ACCESSTOKEN_NOT_EXIST(HttpStatus.OK, "Token이 존재하지 않습니다.", 4010);
+    ACCESSTOKEN_NOT_EXIST(HttpStatus.OK, "Token이 존재하지 않습니다.", 4010),
+    ANSWER_NOT_FOUND(HttpStatus.OK, "존재하지 않는 답변입니다.", 4044),
+    QUESTION_NOT_FOUND(HttpStatus.OK, "존재하지 않는 질문입니다.", 4044);
 
     private final HttpStatus httpStatus;
     private final String message;
