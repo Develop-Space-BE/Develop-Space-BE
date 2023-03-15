@@ -1,8 +1,6 @@
 package developspace.com.developspace.answer.service;
 
-import developspace.com.developspace.answer.dto.AnswerDto;
-import developspace.com.developspace.answer.dto.AnswerLikeDto;
-import developspace.com.developspace.answer.dto.RequestAnswerDto;
+import developspace.com.developspace.answer.dto.*;
 import developspace.com.developspace.answer.entity.Answer;
 import developspace.com.developspace.answer.entity.AnswerLike;
 import developspace.com.developspace.answer.entity.AnswerLikeCompositeKey;
@@ -18,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static developspace.com.developspace.answer.mapper.AnswerMapStruct.ANSWER_MAPPER;
@@ -35,7 +35,7 @@ public class AnswerService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void writeAnswer(Long questionId, RequestAnswerDto requestAnswerDto, Long id) {
+    public void writeAnswer(RequestAnswerDto requestAnswerDto, Long id) {
 //        Question question = questionRepository.findById(questionIdId).orElseThrow(
 //                () -> new NotFoundException(ANSWER, SERVICE, QUESTION_NOT_FOUND, "Question ID : " + questionId)
 //        );
@@ -118,6 +118,35 @@ public class AnswerService {
 
     }
 
+    @Transactional
+    public List<AnswerListDto> getAnswer(Member member) {
+        List<Answer> answerList = answerRepository.findAllByOrderByLikeCountDesc();
+        List<AnswerListDto> answerLists = new ArrayList<>();
+
+        for(Answer answer : answerList) {
+            boolean answerIsLiked = false;
+            Optional<AnswerLike> answerLiked = answerLikeRepository.findByAnswerIdAndMemberId(answer.getId(), member.getId());
+            if (answerLiked.isPresent()) {
+                answerIsLiked = true;
+            }
+            AnswerListDto answerListDto = ANSWER_MAPPER.answerDtoToAnswerList(answer, member, answerIsLiked);
+            answerLists.add(answerListDto);
+        }
+
+        return answerLists;
+    }
 
 
+    public MyAnswerListDtos myAnswer(String nickname) {
+        List<Answer> myAnswerList = answerRepository.findAllBynickname(nickname);
+        List<MyAnswerListDto> myAnswerLists = new ArrayList<>();
+
+        for(Answer answer : myAnswerList) {
+            MyAnswerListDto myAnswerListDto =  ANSWER_MAPPER.answerDtoToMyAnswerList(answer);
+            myAnswerLists.add(myAnswerListDto);
+        }
+
+        MyAnswerListDtos myAnswerListDtos = new MyAnswerListDtos(myAnswerLists);
+        return myAnswerListDtos;
+    }
 }

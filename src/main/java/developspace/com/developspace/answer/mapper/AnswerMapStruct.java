@@ -1,5 +1,7 @@
 package developspace.com.developspace.answer.mapper;
 
+import developspace.com.developspace.answer.dto.AnswerListDto;
+import developspace.com.developspace.answer.dto.MyAnswerListDto;
 import developspace.com.developspace.answer.dto.RequestAnswerDto;
 import developspace.com.developspace.answer.entity.Answer;
 import developspace.com.developspace.member.entity.Member;
@@ -14,6 +16,19 @@ public interface AnswerMapStruct {
                 .nickname(member.getNickname())
                 .answer(requestAnswerDto.getAnswer())
                 .likeCount(0L)
+                .build();
+    }
+
+    default AnswerListDto answerDtoToAnswerList(Answer answer, Member member, Boolean isLiked) {
+        return AnswerListDto.builder()
+                .answer(answer)
+                .isLiked(isLiked)
+                .build();
+    }
+
+    default MyAnswerListDto answerDtoToMyAnswerList(Answer answer) {
+        return MyAnswerListDto.builder()
+                .answer(answer)
                 .build();
     }
 }

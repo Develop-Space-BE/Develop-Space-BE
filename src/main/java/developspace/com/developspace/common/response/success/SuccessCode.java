@@ -15,7 +15,9 @@ public enum SuccessCode {
     UPDATE_ANSWER(HttpStatus.OK, "답변 수정 성공", 2000),
     DELETE_ANSWER(HttpStatus.OK, "답변 삭제 성공", 2000),
     LIKE_ANSWER(HttpStatus.OK, "답변 좋아요 성공", 2000),
-    UNLIKE_ANSWER(HttpStatus.OK, "답변 좋아요 취소 성공", 2000);
+    UNLIKE_ANSWER(HttpStatus.OK, "답변 좋아요 취소 성공", 2000),
+    GET_ANSWER(HttpStatus.OK, "답변 조회 성공", 2000),
+    MY_ANSWER(HttpStatus.OK, "내 답변 조회 성공", 2000);
 
 
     private final HttpStatus httpStatus;
