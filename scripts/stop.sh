@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/developspace"
+PROJECT_ROOT="/home/ubuntu/developSpace"
 JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
