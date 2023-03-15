@@ -1,5 +1,6 @@
 package developspace.com.developspace.answer.controller;
 
+import developspace.com.developspace.answer.dto.AnswerLikeDto;
 import developspace.com.developspace.answer.dto.RequestAnswerDto;
 import developspace.com.developspace.answer.service.AnswerService;
 import developspace.com.developspace.common.response.success.SuccessResponse;
@@ -68,7 +69,26 @@ public class AnswerController {
 
         answerService.deleteAnswer(answerId, userDetails.getMember());
 
-        return SuccessResponse.toResponseEntity(DELETE_COMMENT, null);
+        return SuccessResponse.toResponseEntity(DELETE_ANSWER, null);
+    }
+
+    @Tag(name = "Like")
+    @Operation(summary = "답변 좋아요", description = "답변 좋아요")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "답변 좋아요 성공"),
+            @ApiResponse(responseCode = "2000", description = "답변 좋아요 취소 성공"),
+            @ApiResponse(responseCode = "4044", description = "존재하지 않는 답변입니다.")
+    })
+    @PostMapping("/like/{answerId}")
+    public ResponseEntity<SuccessResponse<Object>> likeAnswer(@PathVariable Long answerId,
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+        AnswerLikeDto answerLikeDto = answerService.likeAnswer(answerId, userDetails.getMember().getNickname());
+
+        if (answerLikeDto.getIsLiked()){
+            return SuccessResponse.toResponseEntity(LIKE_ANSWER,answerLikeDto);
+        }else{
+            return SuccessResponse.toResponseEntity(UNLIKE_ANSWER,answerLikeDto);
+        }
     }
 
 

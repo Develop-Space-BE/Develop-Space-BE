@@ -1,8 +1,12 @@
 package developspace.com.developspace.answer.service;
 
 import developspace.com.developspace.answer.dto.AnswerDto;
+import developspace.com.developspace.answer.dto.AnswerLikeDto;
 import developspace.com.developspace.answer.dto.RequestAnswerDto;
 import developspace.com.developspace.answer.entity.Answer;
+import developspace.com.developspace.answer.entity.AnswerLike;
+import developspace.com.developspace.answer.entity.AnswerLikeCompositeKey;
+import developspace.com.developspace.answer.repository.AnswerLikeRepository;
 import developspace.com.developspace.answer.repository.AnswerRepository;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
 import developspace.com.developspace.common.exception.NotFoundException;
@@ -13,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Optional;
 
 import static developspace.com.developspace.answer.mapper.AnswerMapStruct.ANSWER_MAPPER;
 import static developspace.com.developspace.common.exception.Domain.ANSWER;
@@ -25,6 +31,7 @@ import static developspace.com.developspace.common.response.error.ErrorCode.*;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final AnswerLikeRepository answerLikeRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -73,11 +80,44 @@ public class AnswerService {
                 throw new NotAuthorizedMemberException(ANSWER, SERVICE, MEMBER_NOT_AUTHORIZED, member.getNickname());
             }
         } else {
+            answerLikeRepository.deleteAllByAnswerId(answerId);
             answerRepository.deleteById(answerId);
         }
 
+        answerLikeRepository.deleteAllByAnswerId(answerId);
         answerRepository.deleteById(answerId);
     }
+
+    @Transactional
+    public AnswerLikeDto likeAnswer(Long answerId, String nickname) {
+
+        boolean isLiked = false;
+
+        Member member = memberRepository.findByNickname(nickname).orElseThrow(
+                () -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Nickname : " + nickname)
+        );
+        Answer answer = answerRepository.findById(answerId).orElseThrow(
+                () -> new NotFoundException(ANSWER, SERVICE, ANSWER_NOT_FOUND, "Answer ID : " + answerId)
+        );
+
+        AnswerLikeCompositeKey answerLikeCompositeKey = new AnswerLikeCompositeKey(answerId, member.getId());
+        Optional<AnswerLike> like = answerLikeRepository.findByAnswerIdAndMemberId(answerId,member.getId());
+        if (like.isPresent()){
+            AnswerLike answerLike = like.get();
+            answer.unlike();
+            answerLikeRepository.delete(answerLike);
+
+            return new AnswerLikeDto(isLiked, answer.getLikeCount());
+        }
+        AnswerLike answerLike = new AnswerLike(answerLikeCompositeKey, member, answer);
+        answer.like();
+        answerLikeRepository.save(answerLike);
+        isLiked = true;
+
+        return new AnswerLikeDto(isLiked, answer.getLikeCount());
+
+    }
+
 
 
 }

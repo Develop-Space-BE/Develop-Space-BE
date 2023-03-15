@@ -44,4 +44,10 @@ public class Answer extends Timestamped {
         this.answer = answerDto.getAnswer();
     }
 
+    public void like() {
+        this.likeCount += 1;
+    }
+    public void unlike() {
+        this.likeCount -= 1;
+    }
 }
