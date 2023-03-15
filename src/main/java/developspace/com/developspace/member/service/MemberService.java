@@ -1,5 +1,6 @@
 package developspace.com.developspace.member.service;
 
+import developspace.com.developspace.answer.repository.AnswerRepository;
 import developspace.com.developspace.common.exception.DuplicationException;
 import developspace.com.developspace.common.exception.InvalidFormatException;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
@@ -31,6 +32,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final AnswerRepository answerRepository;
 
     public void signup(RequestSignupDto requestSignupDto) {
         memberRepository.findByEmail(requestSignupDto.getEmail())
@@ -87,5 +89,19 @@ public class MemberService {
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(member.getEmail(),member.getRole()));
+    }
+
+    @Transactional
+    public void updateNickname(String nickname, Member member) {
+//        String nicknameBefore = member.getNickname();
+        memberRepository.findByNickname(nickname)
+                        .ifPresent(n -> {
+                            throw new DuplicationException(MEMBER, SERVICE, NICKNAME_DUPLICATED, "이메일: " + member.getEmail());
+        });
+        
+//        answerRepository.updateNickname(nicknameBefore, nickname);
+
+        member.updateNickname(nickname);
+        memberRepository.save(member);
     }
 }
