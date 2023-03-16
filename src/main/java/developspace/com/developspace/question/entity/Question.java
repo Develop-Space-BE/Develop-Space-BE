@@ -4,10 +4,7 @@ import developspace.com.developspace.common.entity.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -20,5 +17,11 @@ public class Question extends Timestamped {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private SubCategory subcategory;
 }
