@@ -1,6 +1,7 @@
 package developspace.com.developspace.question.entity;
 
 import developspace.com.developspace.common.entity.Timestamped;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Question extends Timestamped {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -24,4 +25,11 @@ public class Question extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private SubCategory subcategory;
+
+    @Builder
+    public Question(String content, Category category, SubCategory subcategory) {
+        this.content = content;
+        this.category = category;
+        this.subcategory = subcategory;
+    }
 }
