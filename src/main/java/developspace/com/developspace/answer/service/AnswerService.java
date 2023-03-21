@@ -79,13 +79,12 @@ public class AnswerService {
             if (!answer.getNickname().equals(member.getNickname())){
                 throw new NotAuthorizedMemberException(ANSWER, SERVICE, MEMBER_NOT_AUTHORIZED, member.getNickname());
             }
+            answerLikeRepository.deleteAllByAnswerId(answerId);
+            answerRepository.deleteById(answerId);
         } else {
             answerLikeRepository.deleteAllByAnswerId(answerId);
             answerRepository.deleteById(answerId);
         }
-
-        answerLikeRepository.deleteAllByAnswerId(answerId);
-        answerRepository.deleteById(answerId);
     }
 
     @Transactional
