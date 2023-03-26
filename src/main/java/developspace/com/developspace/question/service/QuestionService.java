@@ -70,6 +70,17 @@ public class QuestionService {
     }
 
     @Transactional
+    public List<ResponseQuestionDto> getQuestionListByCategory(String category){
+        Category categoryEnum = Category.valueOf(category);
+        List<Question> questionList = questionRepository.findAllByCategory(categoryEnum);
+        List<ResponseQuestionDto> responseQuestionDtoList = new ArrayList<>();
+        for (Question question : questionList) {
+            responseQuestionDtoList.add(QUESTION_MAPPER.QuestionToResponseQuestionDto(question));
+        }
+        return responseQuestionDtoList;
+    }
+
+    @Transactional
     public void likeQuestion(UserDetailsImpl userDetails, Long questionId) {
         QuestionLikeCompositeKey compositeKey = new QuestionLikeCompositeKey(userDetails.getMember().getId(), questionId);
         if (questionLikeRepository.existsById(compositeKey)){

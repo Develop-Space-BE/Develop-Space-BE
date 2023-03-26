@@ -1,6 +1,7 @@
 package developspace.com.developspace.question.repository.JpaAndQueryDSLImpl.QueryDSL;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import developspace.com.developspace.question.entity.Category;
 import developspace.com.developspace.question.entity.Question;
 import developspace.com.developspace.question.entity.SubCategory;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,13 @@ public class QDSLQuestionRepository {
         return queryFactory
                 .selectFrom(question)
                 .where(question.subcategory.eq(subCategory))
+                .fetch();
+    }
+
+    public List<Question> findAllByCategory(Category category) {
+        return queryFactory
+                .selectFrom(question)
+                .where(question.category.eq(category))
                 .fetch();
     }
 }

@@ -1,5 +1,6 @@
 package developspace.com.developspace.question.repository.JpaAndQueryDSLImpl;
 
+import developspace.com.developspace.question.entity.Category;
 import developspace.com.developspace.question.entity.Question;
 import developspace.com.developspace.question.entity.SubCategory;
 import developspace.com.developspace.question.repository.JpaAndQueryDSLImpl.JPA.JPAQuestionRepository;
@@ -34,5 +35,10 @@ public class QuestionRepositoryImpl implements developspace.com.developspace.que
     @Override
     public List<Question> findAllBySubCategory(SubCategory subCategory) {
         return qdslQuestionRepository.findAllBySubCategory(subCategory);
+    }
+
+    @Override
+    public List<Question> findAllByCategory(Category category) {
+        return qdslQuestionRepository.findAllByCategory(category);
     }
 }
