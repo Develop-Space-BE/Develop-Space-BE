@@ -41,7 +41,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "2000", description = "질문 삭제 성공")
     })
     @Operation(summary = "질문 삭제", description = "질문 삭제 API, 관리자 계정만 사용 가능")
-    @PostMapping("/{questionId}}")
+    @DeleteMapping("/{questionId}}")
     public ResponseEntity<SuccessResponse<Object>> deleteQuestion(@PathVariable Long questionId,
                                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
         questionService.deleteQuestion(userDetails, questionId);
