@@ -11,6 +11,8 @@ import developspace.com.developspace.common.exception.NotFoundException;
 import developspace.com.developspace.member.entity.Member;
 import developspace.com.developspace.member.entity.MemberRole;
 import developspace.com.developspace.member.repository.MemberRepository;
+import developspace.com.developspace.question.entity.Question;
+import developspace.com.developspace.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,12 +35,13 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final AnswerLikeRepository answerLikeRepository;
     private final MemberRepository memberRepository;
+    private final QuestionRepository questionRepository;
 
     @Transactional
-    public void writeAnswer(RequestAnswerDto requestAnswerDto, Long id) {
-//        Question question = questionRepository.findById(questionIdId).orElseThrow(
-//                () -> new NotFoundException(ANSWER, SERVICE, QUESTION_NOT_FOUND, "Question ID : " + questionId)
-//        );
+    public void writeAnswer(Long questionId, RequestAnswerDto requestAnswerDto, Long id) {
+        Question question = questionRepository.findById(questionId).orElseThrow(
+                () -> new NotFoundException(ANSWER, SERVICE, QUESTION_NOT_FOUND, "Question ID : " + questionId)
+        );
 
     Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));

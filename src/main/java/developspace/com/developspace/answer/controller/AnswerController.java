@@ -28,15 +28,15 @@ public class AnswerController {
     @Tag(name = "Answer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "2000", description = "답변 작성 성공"),
-//            @ApiResponse(responseCode = "4041", description = "존재하지 않는 질문입니다."),
+            @ApiResponse(responseCode = "4041", description = "존재하지 않는 질문입니다."),
             @ApiResponse(responseCode = "4044", description = "존재하지 않는 답변입니다.")
     })
     @Operation(summary = "답변 작성", description = "답변 작성")
     @PostMapping()
-    public ResponseEntity<SuccessResponse<Object>> writeAnswer(
+    public ResponseEntity<SuccessResponse<Object>> writeAnswer(@PathVariable Long questionId,
                                                                @RequestBody RequestAnswerDto requestAnswerDto,
                                                                @AuthenticationPrincipal UserDetailsImpl userDetails){
-        answerService.writeAnswer(requestAnswerDto, userDetails.getMember().getId());
+        answerService.writeAnswer(questionId, requestAnswerDto, userDetails.getMember().getId());
         return SuccessResponse.toResponseEntity(WRITE_ANSWER, null);
     }
 
