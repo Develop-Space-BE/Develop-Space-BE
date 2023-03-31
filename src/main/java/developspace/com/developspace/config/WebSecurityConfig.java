@@ -61,6 +61,7 @@ public class WebSecurityConfig {
         http.authorizeRequests().antMatchers("/api/member/signup","/api/member/login", "/api/member/kakaologin", "/login/**").permitAll()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/answer/**").permitAll()
+                .antMatchers("/api/member/kakao/callback").permitAll()
                 .antMatchers("api/question/**").permitAll()
                 .anyRequest().authenticated();
 
