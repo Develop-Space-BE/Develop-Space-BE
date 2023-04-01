@@ -83,6 +83,9 @@ public class WebSecurityConfig {
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
+        configuration.addExposedHeader(JwtUtil.AUTHORIZATION_HEADER);
+
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
 
