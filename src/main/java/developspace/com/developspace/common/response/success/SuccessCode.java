@@ -24,7 +24,8 @@ public enum SuccessCode {
     DELETE_QUESTION(HttpStatus.OK, "질문 삭제 성공", 2000),
     LIKE_QUESTION(HttpStatus.OK, "질문 좋아요 성공", 2000),
     BOOKMARK_QUESTION(HttpStatus.OK, "질문 북마크 성공", 2000),
-    GET_BOOKMARKED_QUESTION(HttpStatus.OK, "북마크한 질문 조회 성공", 2000);
+    GET_BOOKMARKED_QUESTION(HttpStatus.OK, "북마크한 질문 조회 성공", 2000),
+    GET_PROGRESS_RATE(HttpStatus.OK, "진도율 조회 성공", 2000);
 
 
     private final HttpStatus httpStatus;
