@@ -105,4 +105,21 @@ public class QuestionService {
         Bookmark bookmark = new Bookmark(compositeKey, userDetails.getMember(), question);
         bookmarkRepository.save(bookmark);
     }
+
+    @Transactional(readOnly = true)
+    public List<ResponseQuestionDto> getBookmarkedQuestion(UserDetailsImpl userDetails) {
+        List<ResponseQuestionDto> result = new ArrayList<>();
+
+        List<Bookmark> bookmarkList= bookmarkRepository.findAllByMember(userDetails.getMember());
+        for (Bookmark bookmark : bookmarkList) {
+            result.add(ResponseQuestionDto.builder()
+                            .id(bookmark.getQuestion().getId())
+                            .content(bookmark.getQuestion().getContent())
+                            .category(bookmark.getQuestion().getCategory().name())
+                            .subcategory(bookmark.getQuestion().getSubcategory().name())
+                    .build());
+        }
+
+        return result;
+    }
 }

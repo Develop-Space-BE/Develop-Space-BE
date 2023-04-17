@@ -91,4 +91,14 @@ public class QuestionController {
         questionService.bookmarkQuestion(userDetails, questionId);
         return SuccessResponse.toResponseEntity(SuccessCode.LIKE_QUESTION, null);
     }
+
+    @Tag(name = "Question")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "북마크한 질문 조회 성공")
+    })
+    @Operation(summary = "질문 북마크 조회", description = "질문 북마크 조회 API")
+    @PostMapping("/bookmark")
+    public ResponseEntity<SuccessResponse<Object>> getBookmarkedQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return SuccessResponse.toResponseEntity(SuccessCode.GET_BOOKMARKED_QUESTION, questionService.getBookmarkedQuestion(userDetails));
+    }
 }

@@ -1,9 +1,7 @@
 package developspace.com.developspace.question.repository.JpaAndQueryDSLImpl.QueryDSL;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import developspace.com.developspace.question.entity.Category;
-import developspace.com.developspace.question.entity.Question;
-import developspace.com.developspace.question.entity.SubCategory;
+import developspace.com.developspace.question.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
