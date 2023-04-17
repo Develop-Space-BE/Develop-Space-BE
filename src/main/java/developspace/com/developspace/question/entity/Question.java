@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Question extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)

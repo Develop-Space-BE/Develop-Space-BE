@@ -101,4 +101,14 @@ public class QuestionController {
     public ResponseEntity<SuccessResponse<Object>> getBookmarkedQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return SuccessResponse.toResponseEntity(SuccessCode.GET_BOOKMARKED_QUESTION, questionService.getBookmarkedQuestion(userDetails));
     }
+    @Tag(name = "Question")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "북마크한 질문 조회 성공")
+    })
+    @Operation(summary = "진도율 조회", description = "진도율 조회 API")
+    @GetMapping("/progress")
+    public ResponseEntity<SuccessResponse<Float>> getProgressRate(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return SuccessResponse.toResponseEntity(SuccessCode.GET_PROGRESS_RATE, questionService.getProgressRate(userDetails));
+    }
+
 }

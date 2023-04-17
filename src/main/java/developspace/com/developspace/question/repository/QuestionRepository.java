@@ -13,4 +13,5 @@ public interface QuestionRepository {
     void deleteById(Long questionId);
     List<Question> findAllBySubCategory(SubCategory subCategory);
     List<Question> findAllByCategory(Category category);
+    Long countAll();
 }

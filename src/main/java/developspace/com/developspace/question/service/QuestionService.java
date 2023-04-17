@@ -1,5 +1,6 @@
 package developspace.com.developspace.question.service;
 
+import developspace.com.developspace.answer.repository.AnswerRepository;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
 
 import developspace.com.developspace.common.exception.NotFoundException;
@@ -29,6 +30,7 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionLikeRepository questionLikeRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final AnswerRepository answerRepository;
 
     @Transactional
     public void saveQuestion(UserDetailsImpl userDetails, RequestSaveQuestionDto requestDto) {
@@ -121,5 +123,10 @@ public class QuestionService {
         }
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Float getProgressRate(UserDetailsImpl userDetails) {
+        return (float) (answerRepository.countAllByNickname(userDetails.getMember().getNickname()) / questionRepository.countAll())*100;
     }
 }

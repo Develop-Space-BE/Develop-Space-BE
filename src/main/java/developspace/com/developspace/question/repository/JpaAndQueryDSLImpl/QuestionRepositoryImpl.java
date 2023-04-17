@@ -41,4 +41,9 @@ public class QuestionRepositoryImpl implements developspace.com.developspace.que
     public List<Question> findAllByCategory(Category category) {
         return qdslQuestionRepository.findAllByCategory(category);
     }
+
+    @Override
+    public Long countAll() {
+        return jpaQuestionRepository.countBy();
+    }
 }
