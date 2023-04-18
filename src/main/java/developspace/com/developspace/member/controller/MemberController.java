@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static developspace.com.developspace.common.response.success.SuccessCode.NICKNAME_UPDATE;
-import static developspace.com.developspace.common.response.success.SuccessCode.SIGNUP;
-import static developspace.com.developspace.common.response.success.SuccessCode.LOGIN;
+import static developspace.com.developspace.common.response.success.SuccessCode.*;
 
 @Tag(name = "Member", description = "회원 관련 API")
 @RestController
@@ -81,6 +79,16 @@ public class MemberController {
     public ResponseEntity<SuccessResponse<Object>> updateNickname(@RequestBody RequestUpdateNicknameDto requestUpdateNicknameDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         memberService.updateNickname(requestUpdateNicknameDto.getNickname(), userDetails.getMember());
         return SuccessResponse.toResponseEntity(NICKNAME_UPDATE, null);
+    }
+
+    @Tag(name = "Member")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "멤버 조회 성공")
+    })
+    @Operation(summary = "멤버 조회 성공", description = "멤버 조회 성공")
+    @GetMapping("/info")
+    public ResponseEntity<SuccessResponse<Object>> memberInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return SuccessResponse.toResponseEntity(GET_MEMBER, memberService.memberInfo(userDetails.getMember()));
     }
 
 }

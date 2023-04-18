@@ -6,6 +6,7 @@ import developspace.com.developspace.common.exception.InvalidFormatException;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
 import developspace.com.developspace.common.exception.NotFoundException;
 import developspace.com.developspace.jwt.JwtUtil;
+import developspace.com.developspace.member.dto.KakaoMemberDto;
 import developspace.com.developspace.member.dto.RequestLoginDto;
 import developspace.com.developspace.member.dto.RequestSignupDto;
 import developspace.com.developspace.member.entity.Member;
@@ -103,5 +104,9 @@ public class MemberService {
 
         member.updateNickname(nickname);
         memberRepository.save(member);
+    }
+
+    public KakaoMemberDto memberInfo(Member member) {
+        return MEMBER_MAPPER.memberDto(member);
     }
 }

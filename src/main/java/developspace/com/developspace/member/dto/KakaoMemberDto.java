@@ -2,10 +2,12 @@ package developspace.com.developspace.member.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Schema(description = "카카오 회원 정보 Dto")
 @Getter
+@Builder
 @AllArgsConstructor
 public class KakaoMemberDto {
     private Long id;
