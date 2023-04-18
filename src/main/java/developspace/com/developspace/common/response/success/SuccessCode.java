@@ -18,6 +18,7 @@ public enum SuccessCode {
     UNLIKE_ANSWER(HttpStatus.OK, "답변 좋아요 취소 성공", 2000),
     GET_ANSWER(HttpStatus.OK, "답변 조회 성공", 2000),
     MY_ANSWER(HttpStatus.OK, "내 답변 조회 성공", 2000),
+    MY_LIKE(HttpStatus.OK, "내가 좋아요한 답변 조회 성공", 2000),
     WRITE_QUESTION(HttpStatus.OK, "질문 작성 성공", 2000),
     GET_QUESTION_BY_SUBCATEGORY(HttpStatus.OK, "소분류에 따른 질문 조회 성공", 2000),
     UPDATE_QUESTION(HttpStatus.OK, "질문 수정 성공", 2000),

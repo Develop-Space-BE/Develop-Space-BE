@@ -32,7 +32,7 @@ public class AnswerController {
             @ApiResponse(responseCode = "4044", description = "존재하지 않는 답변입니다.")
     })
     @Operation(summary = "답변 작성", description = "답변 작성")
-    @PostMapping()
+    @PostMapping("/{questionId}")
     public ResponseEntity<SuccessResponse<Object>> writeAnswer(@PathVariable Long questionId,
                                                                @RequestBody RequestAnswerDto requestAnswerDto,
                                                                @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -93,26 +93,50 @@ public class AnswerController {
     }
 
     @Tag(name = "Answer")
-    @Operation(summary = "답변 조회", description = "답변 조회")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "2000", description = "답변 조회 성공"),
-    })
-
-    @GetMapping("")
-    public ResponseEntity<SuccessResponse<Object>> getAnswerList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return SuccessResponse.toResponseEntity(GET_ANSWER, answerService.getAnswer(userDetails.getMember()));
-    }
-
-    @Tag(name = "Answer")
     @Operation(summary = "내 답변 조회", description = "내 답변 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "2000", description = "내 답변 조회 성공"),
+    })
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<SuccessResponse<Object>> getAnswerList(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return SuccessResponse.toResponseEntity(GET_ANSWER, answerService.getAnswer(userDetails.getMember(), questionId));
+    }
+
+    @Tag(name = "Answer")
+    @Operation(summary = "다른 답변 조회", description = "다른 답변 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "다른 답변 조회 성공"),
+    })
+
+    @GetMapping("/other/{questionId}")
+    public ResponseEntity<SuccessResponse<Object>> getOtherAnswerList(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return SuccessResponse.toResponseEntity(GET_ANSWER, answerService.getOtherAnswer(userDetails.getMember(), questionId));
+    }
+
+
+    @Tag(name = "Answer")
+    @Operation(summary = "마이페이지 내 답변 조회", description = "마이페이지 내 답변 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "마이페이지 답변 조회 성공"),
     })
 
     @GetMapping("/myanswer")
     public ResponseEntity<SuccessResponse<Object>> myAnswerList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         String nickname = userDetails.getMember().getNickname();
         return SuccessResponse.toResponseEntity(MY_ANSWER, answerService.myAnswer(nickname));
+    }
+
+    @Tag(name = "Like")
+    @Operation(summary = "마이페이지 좋아요한 답변", description = "마이페이지 좋아요한 답변")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "2000", description = "마이페이지 좋아요한 답변 조회 성공"),
+    })
+
+    @GetMapping("/mylike")
+    public ResponseEntity<SuccessResponse<Object>> myLikeAnswerList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        String nickname = userDetails.getMember().getNickname();
+        return SuccessResponse.toResponseEntity(MY_LIKE, answerService.myLikeAnswerList(nickname));
     }
 
 
