@@ -46,7 +46,7 @@ public class AnswerService {
     Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));
 
-    Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member);
+    Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member, question);
     answerRepository.save(answer);
     }
 
@@ -121,8 +121,8 @@ public class AnswerService {
     }
 
     @Transactional
-    public List<AnswerListDto> getAnswer(Member member) {
-        List<Answer> answerList = answerRepository.findAllByOrderByLikeCountDesc();
+    public List<AnswerListDto> getAnswer(Member member, Long questionId) {
+        List<Answer> answerList = answerRepository.findByQuestionIdAndNickname(questionId, member.getNickname());
         List<AnswerListDto> answerLists = new ArrayList<>();
 
         for(Answer answer : answerList) {
@@ -151,4 +151,41 @@ public class AnswerService {
         MyAnswerListDtos myAnswerListDtos = new MyAnswerListDtos(myAnswerLists);
         return myAnswerListDtos;
     }
+
+    @Transactional
+    public List<AnswerListDto> getOtherAnswer(Member member, Long questionId) {
+        List<Answer> answerList = answerRepository.findByQuestionIdAndNicknameNotOrderByLikeCountDesc(questionId, member.getNickname());
+        List<AnswerListDto> answerLists = new ArrayList<>();
+
+        for(Answer answer : answerList) {
+            boolean answerIsLiked = false;
+            Optional<AnswerLike> answerLiked = answerLikeRepository.findByAnswerIdAndMemberId(answer.getId(), member.getId());
+            if (answerLiked.isPresent()) {
+                answerIsLiked = true;
+            }
+            AnswerListDto answerListDto = ANSWER_MAPPER.answerDtoToAnswerList(answer, member, answerIsLiked);
+            answerLists.add(answerListDto);
+        }
+
+        return answerLists;
+    }
+
+    public MyLikeListDtos myLikeAnswerList(String nickname) {
+        List<AnswerLike> answerLikes = answerLikeRepository.findAllByAndMember_Nickname(nickname);
+        List<AnswerListDto> answerListDtos = new ArrayList<>();
+
+        for(AnswerLike answerLike : answerLikes) {
+            boolean answerIsLiked = false;
+            Optional<AnswerLike> answerLiked = answerLikeRepository.findByAnswerIdAndMember_Nickname(answerLike.getAnswer().getId(), nickname);
+            if (answerLiked.isPresent()) {
+                answerIsLiked = true;
+            }
+            AnswerListDto answerListDto = ANSWER_MAPPER.answerDtoToAnswerList(answerLike.getAnswer(), new Member(), answerIsLiked);
+            answerListDtos.add(answerListDto);
+        }
+        MyLikeListDtos myLikeListDtos = new MyLikeListDtos(answerListDtos);
+
+        return myLikeListDtos;
+    }
+
 }

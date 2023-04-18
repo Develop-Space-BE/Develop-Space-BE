@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    List<Answer> findAllByOrderByLikeCountDesc();
-
     List<Answer> findAllBynickname(String nickname);
 
     Long countAllByNickname(String nickname);
+
+    List<Answer> findByQuestionIdAndNickname(Long questionId, String nickname);
+
+    List<Answer> findByQuestionIdAndNicknameNotOrderByLikeCountDesc(Long questionId, String nickname);
+
 }

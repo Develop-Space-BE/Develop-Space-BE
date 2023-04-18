@@ -1,6 +1,7 @@
 package developspace.com.developspace.answer.dto;
 
 import developspace.com.developspace.answer.entity.Answer;
+import developspace.com.developspace.question.entity.Question;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +15,15 @@ public class MyAnswerListDto {
     private String nickname;
     @Schema(description = "답변 내용", example = "답변 내용")
     private String answer;
+    @Schema(description = "질문 내용", example = "질문 내용")
+    private String content;
 
     @Builder
-    public MyAnswerListDto(Answer answer){
+    public MyAnswerListDto(Answer answer, Question question){
         this.id = answer.getId();
         this.nickname = answer.getNickname();
         this.answer = answer.getAnswer();
+        this.content = question.getContent();
     }
 
 
