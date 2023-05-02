@@ -24,6 +24,7 @@ public interface AnswerMapStruct {
     default AnswerListDto answerDtoToAnswerList(Answer answer, Member member, Boolean isLiked) {
         return AnswerListDto.builder()
                 .answer(answer)
+                .question(answer.getQuestion())
                 .isLiked(isLiked)
                 .build();
     }

@@ -15,16 +15,19 @@ public class AnswerListDto {
     private String nickname;
     @Schema(description = "답변 내용", example = "답변 내용")
     private String answer;
+    @Schema(description = "질문 내용", example = "질문 내용")
+    private String content;
     @Schema(description = "좋아요 갯수", example = "좋아요 갯수")
     private Long likeCount;
     @Schema(description = "좋아요 여부", example = "좋아요 여부")
     private boolean isLiked;
 
     @Builder
-    public AnswerListDto(Answer answer, boolean isLiked){
+    public AnswerListDto(Answer answer, boolean isLiked, Question question){
         this.id = answer.getId();
         this.nickname = answer.getNickname();
         this.answer = answer.getAnswer();
+        this.content = question.getContent();
         this.likeCount = answer.getLikeCount();
         this.isLiked = isLiked;
     }
