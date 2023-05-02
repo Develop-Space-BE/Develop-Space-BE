@@ -6,6 +6,7 @@ import developspace.com.developspace.answer.entity.AnswerLike;
 import developspace.com.developspace.answer.entity.AnswerLikeCompositeKey;
 import developspace.com.developspace.answer.repository.AnswerLikeRepository;
 import developspace.com.developspace.answer.repository.AnswerRepository;
+import developspace.com.developspace.common.exception.DuplicationException;
 import developspace.com.developspace.common.exception.NotAuthorizedMemberException;
 import developspace.com.developspace.common.exception.NotFoundException;
 import developspace.com.developspace.member.entity.Member;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 import static developspace.com.developspace.answer.mapper.AnswerMapStruct.ANSWER_MAPPER;
 import static developspace.com.developspace.common.exception.Domain.ANSWER;
+import static developspace.com.developspace.common.exception.Domain.MEMBER;
 import static developspace.com.developspace.common.exception.Layer.SERVICE;
 import static developspace.com.developspace.common.response.error.ErrorCode.*;
 
@@ -39,15 +41,25 @@ public class AnswerService {
 
     @Transactional
     public void writeAnswer(Long questionId, RequestAnswerDto requestAnswerDto, Long id) {
+
+
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new NotFoundException(ANSWER, SERVICE, QUESTION_NOT_FOUND, "Question ID : " + questionId)
         );
 
-    Member member = memberRepository.findById(id)
+        Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));
 
-    Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member, question);
-    answerRepository.save(answer);
+        answerRepository.findByAnswerAndNickname(requestAnswerDto.getAnswer(), member.getNickname())
+                .ifPresent(answer -> {
+                    throw new DuplicationException(ANSWER, SERVICE, ANSWER_ISPRESENT, "질문: " + requestAnswerDto.getAnswer());
+                });
+
+
+        Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member, question);
+        answerRepository.save(answer);
+
+
     }
 
     @Transactional

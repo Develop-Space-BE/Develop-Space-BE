@@ -15,7 +15,8 @@ public enum ErrorCode {
     UNHANDLED_SERVER_ERROR(HttpStatus.OK, "서버 에러 입니다.", 5000),
     ACCESSTOKEN_NOT_EXIST(HttpStatus.OK, "Token이 존재하지 않습니다.", 4010),
     ANSWER_NOT_FOUND(HttpStatus.OK, "존재하지 않는 답변입니다.", 4044),
-    QUESTION_NOT_FOUND(HttpStatus.OK, "존재하지 않는 질문입니다.", 4044);
+    QUESTION_NOT_FOUND(HttpStatus.OK, "존재하지 않는 질문입니다.", 4044),
+    ANSWER_ISPRESENT(HttpStatus.OK, "이미 답변을 작성했습니다.", 4091);
 
     private final HttpStatus httpStatus;
     private final String message;
