@@ -25,7 +25,6 @@ import java.util.Optional;
 
 import static developspace.com.developspace.answer.mapper.AnswerMapStruct.ANSWER_MAPPER;
 import static developspace.com.developspace.common.exception.Domain.ANSWER;
-import static developspace.com.developspace.common.exception.Domain.MEMBER;
 import static developspace.com.developspace.common.exception.Layer.SERVICE;
 import static developspace.com.developspace.common.response.error.ErrorCode.*;
 
@@ -41,13 +40,11 @@ public class AnswerService {
 
     @Transactional
     public void writeAnswer(Long questionId, RequestAnswerDto requestAnswerDto, Long id) {
-
-
         Question question = questionRepository.findById(questionId).orElseThrow(
                 () -> new NotFoundException(ANSWER, SERVICE, QUESTION_NOT_FOUND, "Question ID : " + questionId)
         );
 
-        Member member = memberRepository.findById(id)
+    Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ANSWER, SERVICE, MEMBER_NOT_FOUND, "Id : " + id));
 
         answerRepository.findByAnswerAndNickname(requestAnswerDto.getAnswer(), member.getNickname())
@@ -55,11 +52,8 @@ public class AnswerService {
                     throw new DuplicationException(ANSWER, SERVICE, ANSWER_ISPRESENT, "질문: " + requestAnswerDto.getAnswer());
                 });
 
-
-        Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member, question);
-        answerRepository.save(answer);
-
-
+    Answer answer = ANSWER_MAPPER.answerDtoToAnswer(requestAnswerDto, member, question);
+    answerRepository.save(answer);
     }
 
     @Transactional
