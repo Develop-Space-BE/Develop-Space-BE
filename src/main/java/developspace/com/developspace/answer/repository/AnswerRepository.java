@@ -18,6 +18,5 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     List<Answer> findByQuestionIdAndNicknameNotOrderByLikeCountDesc(Long questionId, String nickname);
 
-    Optional<Answer> findByAnswerAndNickname(String answer, String nickname);
-
+    Optional<Object> findByAnswerAndNickname(String answer, String nickname);
 }
