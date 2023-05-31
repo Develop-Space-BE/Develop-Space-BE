@@ -104,7 +104,7 @@ jobs:
         notify_when: 'failure'
         message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
       env:
-       SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
        
     - name: Report Status Success
       if: always()
@@ -114,4 +114,4 @@ jobs:
         notify_when: 'success'
         notification_title: '{workflow} has {status_message}'
       env:
-       SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
